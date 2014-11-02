@@ -2,7 +2,7 @@
 
 ## Motivation
 
-When reading a book series, watching a TV show, or keeping track of one`s own
+When reading a book series, watching a TV show, or keeping track of one's own
 family tree, there are a lot of people and characters to keep track of.  Many of
 these characters will be connected, most obviously by way of familial
 relationships, and these connections are often of interest --- obviously in the
@@ -12,12 +12,12 @@ integral to the plot of many stories.
 However, in large casts and families, it quickly becomes difficult to keep track
 of who is related to who, and in what manner.  In particular, it becomes even
 more difficult when non-familial relationships are also added --- for instance,
-if we take a long-running, complex book series like George R. R. Martin`s *A
+if we take a long-running, complex book series like George R. R. Martin's *A
 Song of Ice and Fire*, just keeping track of the family relationships is hard
 enough.  If we also wanted to track lord-vassal relatioships, for instance, a
 character might be related to another through many subtrees.  They might be
 distantly but directly related, and also linked many ways by combinations of
-blood and my-cousin-is-your-cousin`s-vassal.
+blood and my-cousin-is-your-cousin's-vassal.
 
 This task could be made easier by using a DSL with a nice syntax, or better yet,
 a nice UI, for specifying relationships.  A separate DSL for querying this
@@ -32,9 +32,9 @@ track of characters in books, or for tracing family trees.  If the language is
 extended such that new relationships could be defined by the user, then the
 domain is much larger and will encompass the tracking of any sort of
 interrelated things.  Another general language that encompasses this domain is
-Prolog --- I intend to draw on Prolog`s data model of depth-first-searching the
+Prolog --- I intend to draw on Prolog's data model of depth-first-searching the
 data model built up by the relationship declarations when queried.  However, I
-hope to make my syntax more intuitive than Prolog`s.
+hope to make my syntax more intuitive than Prolog's.
 
 ## Language design
 
@@ -64,7 +64,9 @@ Foolice and Baz
 
 ### Example Output:
 Foolice is the daughter of Alice
+
 Foo and Bob are not related
+
 Foolice is the daughter of Foo and Foo is the son of Baz
 
 
