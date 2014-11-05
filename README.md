@@ -1,6 +1,7 @@
-# project
+# Tree-Tracer
 
+A DSL for keeping track of (family) trees.
 
-See the 
-[project requirements](http://www.cs.hmc.edu/~benw/teaching/cs111_fa14/project.html) 
-for instructions on setting up your project.
+## To build:
+
+Run `sbt` in the root directory of this repo.  Currently doesn't do anything.
