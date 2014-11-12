@@ -3,21 +3,28 @@ package treeTracer.parser
 import scala.util.parsing.combinator._
 import treeTracer.ir._
 
-object PiconotParser extends JavaTokenParsers with PackratParsers {
-  def apply(s:String) :ParseResult[AST] = parseAll(listRules, s)
+object TreeParser extends JavaTokenParsers with PackratParsers {
+  def apply(s:String) :ParseResult[AST] = parseAll(graph, s)
 
-  lazy val tree:PackratParser[Person] =
+  lazy val graph:PackratParser[Graph] =
     (
-      rep(person) ^^ {case people => Forest(people)}
-      | failure("failed to parse a Forest")
+      rep(edge) ^^ {case edges => Graph(edges.toSet)}
+      | failure("failed to parse a Graph")
     )
 
   lazy val person:PackratParser[Person] =
     (
-      | person~"is child of"~person~"and"~person ^^ { case p~"is child of"~p1~"and"~p2 => Child(p, p1, p2)}
-      | """\w+""".r ^^ {Node}
-      | failure("failed to parse a person")
+      """\w+""".r ^^ {Person}
+      | failure("failed to parse a Person")
     )
 
-
+  lazy val edge:PackratParser[Edge] =
+    (
+      person~"is child of"~person ^^ {case p1~"is child of"~p2 => Child(p1, p2,
+        "child")}
+      | person~"is parent of"~person ^^ {case p1~"is child of"~p2 => Parent(p1, p2,
+        "parent")}
+      | person ^^ {case p => Self(p, p, "self")}
+      |failure("failed to parse an Edge")
+    )
 }
