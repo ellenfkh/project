@@ -22,7 +22,7 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
     (
       person~"is child of"~person ^^ {case p1~"is child of"~p2 => Child(p1, p2,
         "child")}
-      | person~"is parent of"~person ^^ {case p1~"is child of"~p2 => Parent(p1, p2,
+      | person~"is parent of"~person ^^ {case p1~"is parent of"~p2 => Parent(p1, p2,
         "parent")}
       | person ^^ {case p => Self(p, p, "self")}
       |failure("failed to parse an Edge")
