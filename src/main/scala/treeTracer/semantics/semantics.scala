@@ -7,7 +7,8 @@ package object TreeSemantics {
     case Graph(edges) => {
       var currentEdgeSet:Set[Edge] = edges;
 
-      currentEdgeSet = makeReciprocal(edges)
+      currentEdgeSet = currentEdgeSet ++ makeReciprocal(edges)
+
     }
   }
 
@@ -18,20 +19,15 @@ package object TreeSemantics {
       val maybeRecip:Option[Edge] = makeReciprocalEdge(edge)
       maybeRecip match {
         case None => ;
-        case Some(x) => tmpEdges = tmpEdges + x
+        case Some(x) => {tmpEdges = tmpEdges + x}
       }
     }
-
     tmpEdges
   }
 
   def makeReciprocalEdge(edge: Edge): Option[Edge] = edge match {
-    case Child(child, parent, "child") => {
-      return Some(Parent(parent, child, "parent"))
-    }
-    case Parent(parent, child, "child") => {
-      return Some(Child(child, parent, "child"))
-    }
-    case _ => return None
+    case Child(child, parent, "child") => Some(Parent(parent, child, "parent"))
+    case Parent(parent, child, "child") => Some(Child(child, parent, "child"))
+    case _ => None
   }
 }
