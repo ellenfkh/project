@@ -14,6 +14,7 @@ object TreeLoop extends EvalLoop with App {
       case TreeParser.Success(t, _) => {
         edgeGraph = eval(t, edgeGraph)
         println("Everybody currently in the world:")
+        // TODO: write a prettier printing function for this.
         println(edgeGraph)
       }
       case e: TreeParser.NoSuccess  => println(e)

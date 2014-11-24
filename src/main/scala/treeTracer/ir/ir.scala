@@ -12,6 +12,3 @@ case class Parent(val self:Person, val child:Person, val rel:String) extends Edg
 case class Rel(val rel:String) extends Edge
 
 case class XtoY(val x:Person, y:Person) extends Query
-case class XtoAll(val x:Person) extends Query
-case class AlltoX(val x:Person) extends Query
-case class RelOfX(val x:Person, val relType:Rel) extends Query
