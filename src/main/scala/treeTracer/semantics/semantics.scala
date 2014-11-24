@@ -3,15 +3,20 @@ package treeTracer.semantics
 import treeTracer.ir._
 
 package object TreeSemantics {
-  def eval(graph: Graph) = graph match {
-    case Graph(edges) => {
-      var currentEdgeSet:Set[Edge] = edges;
-
-      currentEdgeSet = currentEdgeSet ++ makeReciprocal(edges)
-
+  def eval(ast:AST, graph:Set[Edge]):Set[Edge] = ast match {
+    case x:Edge => graph + x
+    case x:Query => {
+      println("you asked something but I can't handle that yet");
+      graph
+    }
+    case _ => {
+      println("you did something really weird?")
+      graph
     }
   }
 
+  /*
+   // TODO: add this back in once querying works
   def makeReciprocal(edges: Set[Edge]) = {
     var tmpEdges:Set[Edge] = Set.empty[Edge]
 
@@ -30,4 +35,5 @@ package object TreeSemantics {
     case Parent(parent, child, "child") => Some(Child(child, parent, "child"))
     case _ => None
   }
+  */
 }
