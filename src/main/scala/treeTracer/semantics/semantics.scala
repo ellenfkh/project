@@ -5,6 +5,14 @@ import treeTracer.ir._
 package object TreeSemantics {
   def eval(ast:AST, graph:Set[Edge]):Set[Edge] = ast match {
     case x:Edge => graph + x
+    case x:Help => {
+      println("commands available are:")
+      println("===> <name>")
+      println("===> <name> is child of <name>")
+      println("===> <name> is parent of <name>")
+      println("===> who is <name> to <name>")
+      graph
+    }
     case x:Query => {
       println("you asked something but I can't handle that yet");
       graph
@@ -14,6 +22,7 @@ package object TreeSemantics {
       graph
     }
   }
+  // TODO: write a load
 
   /*
    // TODO: add this back in once querying works

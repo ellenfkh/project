@@ -6,7 +6,7 @@ import treeTracer.ir._
 import treeTracer.semantics.TreeSemantics.eval
 
 object TreeLoop extends EvalLoop with App {
-  override def prompt = " >"
+  override def prompt = "===> "
 
   var edgeGraph:Set[Edge] = Set.empty[Edge]
 
