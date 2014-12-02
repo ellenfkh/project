@@ -3,8 +3,8 @@ package treeTracer.semantics
 import treeTracer.ir._
 
 package object TreeSemantics {
-  def eval(ast:AST, graph:Set[Edge]):Set[Edge] = ast match {
-    case x:Edge => graph + x
+  def eval(ast:AST, graph:Map[Person, Set[Edge]]):Map[Person,Set[Edge]] = ast match {
+    case x:Edge => addToMap(x, graph)
     case x:Help => {
       println("commands available are:")
       println("===> <name>")
@@ -22,6 +22,16 @@ package object TreeSemantics {
       graph
     }
   }
+
+  def addToMap(e:Edge, graph:Map[Person,Set[Edge]]):Map[Person,Set[Edge]] = {
+    graph.get(e.self) match {
+      case None => graph + (e.self -> (Set.empty[Edge] +e))
+      case Some(edges:Set[Edge]) => (graph - e.self) + (e.self -> (edges + e))
+    }
+  }
+
+
+
   // TODO: write a load
 
   /*
