@@ -9,7 +9,8 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
   lazy val program:PackratParser[AST] =
     (
       "help" ^^ {case "help" => Help()}
-      | "who is"~person~"to"~person ^^ {case "who is"~p1~"to"~p2 => XtoY(p1, p1)}
+      | "load"~"""\w+""".r ^^ {case "load"~f => Load(f)}
+      | "who is"~person~"to"~person ^^ {case "who is"~p1~"to"~p2 => XtoY(p1, p2)}
       | person~"is child of"~person ^^ {case p1~"is child of"~p2 => Child(p1, p2,
         "child")}
       | person~"is parent of"~person ^^ {case p1~"is parent of"~p2 => Parent(p1, p2,
@@ -17,6 +18,12 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
       | person ^^ {case p => Self(p, p, "self")}
       | failure("failed to parse an Edge")
     )
+
+  lazy val file:PackratParser[Load] =
+  (
+      """\w+""".r ^^ {Load}
+      | failure("failed to parse a Load file")
+  )
 
 
   lazy val person:PackratParser[Person] =

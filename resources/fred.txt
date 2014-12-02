@@ -1,0 +1,4 @@
+fred is child of freddy
+freddy is child of fredina
+fredina is child of frederick
+frederick is child of freddle
