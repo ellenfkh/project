@@ -17,9 +17,9 @@ package object TreeSemantics {
       println("===> who is <name> to <name>")
       graph
     }
-    case x:Query => {
+    case q:Query => {
       println("you asked something but I can't handle that yet");
-      print(x.x.name + x.y.name)
+      print(q.x.name + q.y.name)
       graph
     }
     case x:Load => loadFile(x, graph)
@@ -29,6 +29,8 @@ package object TreeSemantics {
     }
   }
 
+
+
   def loadFile(load:Load, graph:Map[Person,Set[Edge]]):Map[Person,Set[Edge]] = {
     var g:Map[Person, Set[Edge]] = graph
 
@@ -36,7 +38,6 @@ package object TreeSemantics {
       var readFile = io.Source.fromFile("resources/" + load.file + ".txt")
       // Loop through lines in file and parse them in
       for(line <- readFile.getLines()) {
-        println(line)
         TreeParser(line) match {
           case TreeParser.Success(t, _) => {
             g = eval(t, g)
@@ -67,9 +68,6 @@ package object TreeSemantics {
     }
   }
 
-
-
-  // TODO: write a load
 
   /*
    // TODO: add this back in once querying works

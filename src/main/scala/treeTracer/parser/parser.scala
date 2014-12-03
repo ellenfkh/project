@@ -19,13 +19,6 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
       | failure("failed to parse an Edge")
     )
 
-  lazy val file:PackratParser[Load] =
-  (
-      """\w+""".r ^^ {Load}
-      | failure("failed to parse a Load file")
-  )
-
-
   lazy val person:PackratParser[Person] =
     (
       """\w+""".r ^^ {Person}

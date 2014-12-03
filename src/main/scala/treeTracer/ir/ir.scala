@@ -7,6 +7,8 @@ sealed abstract class Query extends AST {
 }
 sealed abstract class Edge extends AST {
   val self:Person
+  val other:Person
+  val rel:String
 }
 
 case class Help() extends AST
