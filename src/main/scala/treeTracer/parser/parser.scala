@@ -11,11 +11,9 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
       "help" ^^ {case "help" => Help()}
       | "load"~"""\w+""".r ^^ {case "load"~f => Load(f)}
       | "who is"~person~"to"~person ^^ {case "who is"~p1~"to"~p2 => XtoY(p1, p2)}
-      | person~"is child of"~person ^^ {case p1~"is child of"~p2 => Child(p1, p2,
-        "child")}
-      | person~"is parent of"~person ^^ {case p1~"is parent of"~p2 => Parent(p1, p2,
-        "parent")}
-      | person ^^ {case p => Self(p, p, "self")}
+      | person~"is"~rel~"of"~person ^^ {case p1~"is"~rel~"of"~p2 => Edge(p1, p2,
+        rel)}
+      | person ^^ {case p => Edge(p, p, Relationship("self"))}
       | failure("failed to parse an Edge")
     )
 
@@ -23,5 +21,11 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
     (
       """\w+""".r ^^ {Person}
       | failure("failed to parse a Person")
+    )
+
+  lazy val rel:PackratParser[Relationship] =
+    (
+      """\w+""".r ^^ {Relationship}
+      | failure("failed to parse a Relationship")
     )
 }

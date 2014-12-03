@@ -5,20 +5,14 @@ sealed abstract class Query extends AST {
   val x:Person
   val y:Person
 }
-sealed abstract class Edge extends AST {
-  val self:Person
-  val other:Person
-  val rel:String
-}
 
 case class Help() extends AST
 
 case class Person(val name:String) extends AST
-case class Load(val file:String) extends AST
+case class Relationship(val rel:String) extends AST
 
-case class Self(val self:Person, val other:Person, val rel:String) extends Edge
-case class Child(val self:Person, val other:Person, val rel:String) extends Edge
-case class Parent(val self:Person, val other:Person, val rel:String) extends Edge
+case class Load(val file:String) extends AST
+case class Edge(val self:Person, val other:Person, val rel:Relationship) extends AST
 
 case class XtoY(val x:Person, y:Person) extends Query
 

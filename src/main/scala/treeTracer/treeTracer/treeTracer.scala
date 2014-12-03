@@ -33,7 +33,7 @@ object TreeLoop extends EvalLoop with App {
 
   def printRelList(relations:Set[Edge]) = {
     for (edge <- relations) {
-      val reltype:String = edge.rel
+      val reltype:String = edge.rel.rel
       val name:String = edge.other.name
       println(s"    $reltype : $name")
     }
