@@ -18,8 +18,8 @@ package object TreeSemantics {
       graph
     }
     case q:Query => {
-      println("you asked something but I can't handle that yet");
-      print(q.x.name + q.y.name)
+      //println("you asked something but I can't handle that yet");
+      flatSearch(graph, q.x, q.y)
       graph
     }
     case x:Load => loadFile(x, graph)
@@ -29,6 +29,21 @@ package object TreeSemantics {
     }
   }
 
+  def flatSearch(graph:Map[Person,Set[Edge]], x:Person, y:Person):Int= {
+    val xRels = graph.get(x).get
+    val self = x.name
+    val other = y.name
+
+    for (edge <- xRels) {
+      if (edge.other == y) {
+        val rel = edge.rel
+        println(s"$self has $rel : $other")
+        return 1
+      }
+    }
+    println(s"No relation between $self and $other")
+    return 0
+  }
 
 
   def loadFile(load:Load, graph:Map[Person,Set[Edge]]):Map[Person,Set[Edge]] = {

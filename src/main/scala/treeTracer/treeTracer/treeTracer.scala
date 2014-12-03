@@ -13,9 +13,6 @@ object TreeLoop extends EvalLoop with App {
   loop { line => TreeParser(line) match {
       case TreeParser.Success(t, _) => {
         graph = eval(t, graph)
-        println("Everybody currently in the world:")
-        // TODO: write a prettier printing function for this.
-        //println(graph)
         printGraph(graph)
       }
       case e: TreeParser.NoSuccess  => println(e)
@@ -23,6 +20,10 @@ object TreeLoop extends EvalLoop with App {
   }
 
   def printGraph(graph:Map[Person, Set[Edge]]) = {
+    println()
+    println("======================")
+    println("== Current Universe ==")
+    println("======================")
     for ((person, relationships) <- graph) {
       val name:String = person.name
       println(s"$name has relationships:")
