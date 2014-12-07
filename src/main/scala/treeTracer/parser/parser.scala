@@ -9,6 +9,7 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
   lazy val program:PackratParser[AST] =
     (
       "help" ^^ {case "help" => Help()}
+      | "delete"~person ^^ {case "delete"~p => Delete(p)}
       | "load"~"""\w+""".r ^^ {case "load"~f => Load(f)}
       | "who is"~person~"to"~person ^^ {case "who is"~p1~"to"~p2 => XtoY(p1, p2)}
       | person~"is"~rel~"of"~person ^^ {case p1~"is"~rel~"of"~p2 => Edge(p1, p2,
