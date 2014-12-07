@@ -29,6 +29,7 @@ object TreeLoop extends EvalLoop with App {
       println(s"$name has relationships:")
       printRelList(relationships)
     }
+    println("======================")
   }
 
   def printRelList(relations:Set[Edge]) = {

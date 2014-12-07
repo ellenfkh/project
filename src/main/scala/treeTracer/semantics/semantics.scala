@@ -28,20 +28,39 @@ package object TreeSemantics {
     }
   }
 
-  def flatSearch(graph:Map[Person,Set[Edge]], x:Person, y:Person):Int= {
-    val xRels = graph.get(x).get
+  def delete(graph:Map[Person,Set[Edge]], del:Person):Map[Person,Set[Edge]] = {
+    var g:Map[Person,Set[Edge]] = graph
+
+    g
+
+  }
+
+  def flatSearch(graph:Map[Person,Set[Edge]], x:Person, y:Person) = {
     val self = x.name
     val other = y.name
+    var rels = Set.empty[Edge]
 
-    for (edge <- xRels) {
-      if (edge.other == y) {
-        val rel = edge.rel.rel
-        println(s"$self has $rel : $other")
-        return 1
+    graph.get(x) match {
+      case Some(xRels) => {
+        for (edge <- xRels) {
+          if (edge.other == y) {
+            rels = rels + edge
+          }
+        }
+      }
+      case None => {
+        println(s"No person named $self")
       }
     }
-    println(s"No relation between $self and $other")
-    return 0
+
+    if (rels.isEmpty) {
+      println(s"No relation between $self and $other")
+    } else {
+      for (e <- rels) {
+        val r = e.rel.rel
+        println(s"$self is $r of $other")
+      }
+    }
   }
 
 
