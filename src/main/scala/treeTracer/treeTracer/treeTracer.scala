@@ -26,7 +26,7 @@ object TreeLoop extends EvalLoop with App {
     println("======================")
     for ((person, relationships) <- graph) {
       val name:String = person.name
-      println(s"$name has relationships:")
+      println(s"$name is:")
       printRelList(relationships)
     }
     println("======================")
@@ -36,7 +36,7 @@ object TreeLoop extends EvalLoop with App {
     for (edge <- relations) {
       val reltype:String = edge.rel.rel
       val name:String = edge.other.name
-      println(s"    $reltype : $name")
+      println(s"    $reltype of $name")
     }
   }
 

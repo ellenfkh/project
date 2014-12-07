@@ -18,24 +18,33 @@ package object TreeSemantics {
     }
     case q:Query => {
       //println("you asked something but I can't handle that yet");
-      flatSearch(graph, q.x, q.y)
+      flatSearch(q.x, q.y, graph)
       graph
     }
     case x:Load => loadFile(x, graph)
+    case x:Delete => delete(x.person, graph)
     case _ => {
       println("you did something really weird?")
       graph
     }
   }
 
-  def delete(graph:Map[Person,Set[Edge]], del:Person):Map[Person,Set[Edge]] = {
-    var g:Map[Person,Set[Edge]] = graph
+  def delete(del:Person, graph:Map[Person,Set[Edge]]):Map[Person,Set[Edge]] = {
+    var g:Map[Person,Set[Edge]] = graph - del
 
+    for ((person, edges) <- g) {
+      var newEdges = edges
+      for (edge <- edges) {
+        if (edge.other == del) {
+          newEdges = newEdges - edge
+        }
+      }
+      g = g - person + (person -> newEdges)
+    }
     g
-
   }
 
-  def flatSearch(graph:Map[Person,Set[Edge]], x:Person, y:Person) = {
+  def flatSearch(x:Person, y:Person, graph:Map[Person,Set[Edge]]) = {
     val self = x.name
     val other = y.name
     var rels = Set.empty[Edge]
