@@ -3,6 +3,7 @@ import treeTracer.parser.TreeParser
 
 import treeTracer.ir._
 import scala.io.Source
+import scala.collection.mutable
 
 
 package object TreeSemantics {
@@ -18,7 +19,7 @@ package object TreeSemantics {
       graph
     }
     case q:XtoY => {
-      flatSearch(q.x, q.y, graph)
+      dfs(q.x, q.y, graph)
       graph
     }
     case x:WhoIsX => {
@@ -81,6 +82,68 @@ package object TreeSemantics {
     }
   }
 
+  def dfs(x:Person, y:Person, graph:Map[Person,Set[Edge]]) = {
+    val self = x.name
+    val other = y.name
+    var seen = Set.empty[Person]
+    var queue = scala.collection.mutable.Queue.empty[Person]
+    var parentMap = Map.empty[Person, Edge]
+    var cur = x
+    var found = false
+
+    if (!graph.contains(x)) {
+        println(s"No person named $self")
+    } else {
+      queue.enqueue(x)
+      seen = seen + x
+
+      while(!queue.isEmpty) {
+        cur = queue.dequeue()
+        val xRels = graph.get(cur).get
+
+        for (edge <- xRels) {
+          if (!seen.contains(edge.other)) {
+            seen = seen + edge.other
+            queue.enqueue(edge.other)
+            parentMap = parentMap + (edge.other -> edge)
+          }
+          if (edge.other == y) {
+            found = true
+          }
+        }
+      }
+
+      if (found) {
+        traceback(x, y, parentMap)
+
+      } else {
+        println(s"no relationship between $self and $other")
+      }
+    }
+  }
+
+  def traceback(x:Person, y:Person, trace:Map[Person,Edge]) {
+    var e = trace.get(y).get
+    var s = scala.collection.mutable.Stack.empty[Edge]
+    s.push(e)
+    while (e.self != x) {
+      e = trace.get(e.self).get
+      s.push(e)
+    }
+
+    while (!s.isEmpty) {
+      printEdge(s.pop)
+    }
+  }
+
+  def printEdge(e:Edge) {
+    val r = e.rel.rel
+    val p1 = e.self.name
+    val p2 = e.other.name
+    println(s"$p1 is $r of $p2")
+  }
+
+
 
   def loadFile(load:Load, graph:Map[Person,Set[Edge]]):Map[Person,Set[Edge]] = {
     var g:Map[Person, Set[Edge]] = graph
@@ -114,10 +177,12 @@ package object TreeSemantics {
         case _ => graph
       }
     } else {
+      var g = graph
       graph.get(e.self) match {
-        case None => graph + (e.self -> (Set.empty[Edge] +e))
-        case Some(edges:Set[Edge]) => (graph - e.self) + (e.self -> (edges + e))
+        case None => g = graph + (e.self -> (Set.empty[Edge] +e))
+        case Some(edges:Set[Edge]) => g = (graph - e.self) + (e.self -> (edges + e))
       }
+      return addToMap(Edge(e.other, e.other, Relationship("self")), g)
     }
   }
 
