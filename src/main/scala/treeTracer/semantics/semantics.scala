@@ -10,15 +10,19 @@ package object TreeSemantics {
     case x:Edge => addToMap(x, graph)
     case x:Help => {
       println("commands available are:")
-      println("===> <name>")
       println("===> load <file>")
+      println("===> <name>")
+      println("===> delete <name>")
       println("===> <name> is <relationship> to <name>")
       println("===> who is <name> to <name>")
       graph
     }
-    case q:Query => {
-      //println("you asked something but I can't handle that yet");
+    case q:XtoY => {
       flatSearch(q.x, q.y, graph)
+      graph
+    }
+    case x:WhoIsX => {
+      whois(x.x, graph)
       graph
     }
     case x:Load => loadFile(x, graph)
@@ -42,6 +46,11 @@ package object TreeSemantics {
       g = g - person + (person -> newEdges)
     }
     g
+  }
+
+  def whois(x:Person, graph:Map[Person,Set[Edge]]) = graph.get(x) match {
+    case Some(edges) => printRelList(edges)
+    case None => println("no such person")
   }
 
   def flatSearch(x:Person, y:Person, graph:Map[Person,Set[Edge]]) = {
@@ -87,6 +96,7 @@ package object TreeSemantics {
           case e: TreeParser.NoSuccess  => println(e)
         }
       }
+      printGraph(g)
       g
 
       // If user gives a nonexistent file
@@ -110,4 +120,27 @@ package object TreeSemantics {
       }
     }
   }
+
+  def printGraph(graph:Map[Person, Set[Edge]]) = {
+    println()
+    println("======================")
+    println("== Current Universe ==")
+    println("======================")
+    for ((person, relationships) <- graph) {
+      val name:String = person.name
+      println(s"$name is:")
+      printRelList(relationships)
+    }
+    println("======================")
+  }
+
+  def printRelList(relations:Set[Edge]) = {
+    for (edge <- relations) {
+      val reltype:String = edge.rel.rel
+      val name:String = edge.other.name
+      println(s"    $reltype of $name")
+    }
+  }
+
+
 }

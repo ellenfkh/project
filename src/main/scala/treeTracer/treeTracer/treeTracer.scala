@@ -13,7 +13,7 @@ object TreeLoop extends EvalLoop with App {
   loop { line => TreeParser(line) match {
       case TreeParser.Success(t, _) => {
         graph = eval(t, graph)
-        printGraph(graph)
+        //printGraph(graph)
       }
       case e: TreeParser.NoSuccess  => println(e)
     }

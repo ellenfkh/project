@@ -12,6 +12,7 @@ object TreeParser extends JavaTokenParsers with PackratParsers {
       | "delete"~person ^^ {case "delete"~p => Delete(p)}
       | "load"~"""\w+""".r ^^ {case "load"~f => Load(f)}
       | "who is"~person~"to"~person ^^ {case "who is"~p1~"to"~p2 => XtoY(p1, p2)}
+      | "who is"~person ^^ {case "who is"~p => WhoIsX(p)}
       | person~"is"~rel~"of"~person ^^ {case p1~"is"~rel~"of"~p2 => Edge(p1, p2,
         rel)}
       | person ^^ {case p => Edge(p, p, Relationship("self"))}
